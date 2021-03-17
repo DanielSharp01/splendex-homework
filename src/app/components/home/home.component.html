@@ -13,5 +13,5 @@
   <select id="deckSize" (change)="deckSizeChanged($event.target.value)">
     <option [value]="num" [selected]="(gameService.deckSize | async) === num" *ngFor="let num of gameService.deckSizes">{{num}}</option>
   </select>
-  <button class="primary" (click)="gameService.startGame()">START NEW GAME</button>
+  <button class="primary" (click)="startGame()">START NEW GAME</button>
 </div>

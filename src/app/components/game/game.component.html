@@ -1,7 +1,6 @@
 <div class="game-header">
   <span class="align-vcenter">Current tries:&nbsp;<strong>{{gameService.tries | async}}</strong></span>
   <span class="align-hcenter">Best:<br><strong class="big">{{(gameService.best | async) || 'N/A'}}</strong></span>
-  <!-- I interpreted that you are supposed to get back to the landing page when you press restart-->
   <button class="secondary" (click)="gameService.restart()">RESTART</button>
 </div>
 <div class="card-container">

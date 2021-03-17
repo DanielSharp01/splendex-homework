@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Card, CardImage} from '../model/Card';
 import {distinctUntilChanged, map, mergeMap} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  private _screen = new BehaviorSubject<'home' | 'game'>('home');
   private _cards = new BehaviorSubject<Array<Card> | null>(null);
   private _tries = new BehaviorSubject<number>(0);
   private _best = new BehaviorSubject<Array<number | null>>([null, null, null, null, null, null, null, null]);
@@ -20,7 +20,6 @@ export class GameService {
   constructor() {
     this.loadFromStorage();
 
-    this._screen.pipe(distinctUntilChanged()).subscribe(screen => localStorage.setItem('screen', screen));
     this._cards.pipe(distinctUntilChanged()).subscribe(cards => localStorage.setItem('cards', JSON.stringify(cards)));
     this._tries.pipe(distinctUntilChanged()).subscribe(tries => localStorage.setItem('tries', tries.toString()));
     this._best.pipe(distinctUntilChanged()).subscribe(best => localStorage.setItem('best', JSON.stringify(best)));
@@ -30,13 +29,11 @@ export class GameService {
   }
 
   public loadFromStorage(): void {
-    const screen = localStorage.getItem('screen') as 'home' | 'game';
     const cards = localStorage.getItem('cards');
     const tries = localStorage.getItem('tries');
     const best = localStorage.getItem('best');
     const deckSize = localStorage.getItem('deckSize');
     const deckSizeIndex = localStorage.getItem('deckSizeIndex');
-    if (screen) { this._screen.next(screen); }
     if (cards) {
       try {
         this._cards.next(JSON.parse(cards));
@@ -70,10 +67,6 @@ export class GameService {
     }
   }
 
-  public get screen(): Observable<'home' | 'game'> {
-    return this._screen.asObservable();
-  }
-
   public get cards(): Observable<Array<Card> | null> {
     return this._cards.asObservable();
   }
@@ -95,7 +88,6 @@ export class GameService {
   }
 
   public startGame(): void {
-    this._screen.next('game');
     this._deckSizeIndex.next(this.deckSizes.findIndex(d => d === this._deckSize.value));
     this._cards.next(this.generateCards());
     this._tries.next(0);
@@ -165,6 +157,8 @@ export class GameService {
   }
 
   restart(): void {
-    this._screen.next('home');
+    // I interpreted restart as restart with the same deck size
+    this._deckSize.next(this.deckSizes[this._deckSizeIndex.value]);
+    this.startGame();
   }
 }

@@ -7,9 +7,4 @@ import {GameService} from './services/GameService';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  currentScreen: 'home' | 'game';
-
-  constructor(private gameService: GameService) {
-    this.gameService.screen.subscribe(screen => this.currentScreen = screen);
-  }
 }
