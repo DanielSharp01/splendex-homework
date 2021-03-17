@@ -155,9 +155,17 @@ export class GameService {
         }
 
         this.pickEnabled = true;
+        this._cards.next(cards);
       } else {
         this._tries.next(this._tries.value + 1);
         this.pickEnabled = false;
+
+        // Hack to make state management work on refresh
+        revealedCards[0].state = 'hidden';
+        revealedCards[1].state = 'hidden';
+        localStorage.setItem('cards', JSON.stringify(cards));
+        revealedCards[0].state = 'revealed';
+        revealedCards[1].state = 'revealed';
         // Wait a little so the user knows that they picked wrong
         this.timeOutHandle = setTimeout(() => {
           this.timeOutHandle = null;
@@ -168,7 +176,6 @@ export class GameService {
         }, 1000);
       }
     }
-    this._cards.next(cards);
   }
 
   restart(): void {
