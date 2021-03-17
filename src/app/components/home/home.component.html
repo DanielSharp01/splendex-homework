@@ -1,8 +1,14 @@
 <div class="home">
   <h1>Splendex Memory Game</h1>
-  <p>
-    TODO: EXPLAIN THE RULES
-  </p>
+  <div class="rules">
+    <h2>Rules:</h2>
+    <ul>
+      <li>Flip a card to reveal it.</li>
+      <li>If it matches the previously flipped card keep them.</li>
+      <li>If it does not match the previously flipped card flip them back.</li>
+      <li>Once you revealed all the cards you win.</li>
+    </ul>
+  </div>
   <label for="deckSize">Deck size</label>
   <select id="deckSize" (change)="deckSizeChanged($event.target.value)">
     <option [value]="num" [selected]="(gameService.deckSize | async) === num" *ngFor="let num of gameService.deckSizes">{{num}}</option>
