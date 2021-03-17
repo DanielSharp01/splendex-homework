@@ -1,8 +1,8 @@
 <div class="game-header">
-  <span class="align-vcenter">Current tries:&nbsp;<strong>1</strong></span>
-  <span class="align-hcenter">Best:<br><strong class="big">9</strong></span>
-  <button class="secondary">RESTART</button>
+  <span class="align-vcenter">Current tries:&nbsp;<strong>{{gameService.tries | async}}</strong></span>
+  <span class="align-hcenter">Best:<br><strong class="big">{{gameService.best | async}}</strong></span>
+  <button class="secondary" (click)="gameService.startGame()">RESTART</button>
 </div>
 <div class="card-container">
-  <app-card image="angular" state="revealed" *ngFor="let item of [].constructor(20);"></app-card>
+  <app-card [card]="card" *ngFor="let card of (gameService.cards | async);"></app-card>
 </div>

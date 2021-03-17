@@ -2,11 +2,11 @@
   <div class="logo"></div>
   <div class="middle" *ngIf="shouldHaveMiddle">
     <label>Deck size:
-      <select [value]="20">
-        <option value="20">20</option>
+      <select id="deckSize" (change)="deckSizeChanged($event.target.value)">
+        <option [value]="num" [selected]="(gameService.deckSize | async) === num" *ngFor="let num of gameService.deckSizes">{{num}}</option>
       </select>
     </label>
-    <button class="primary">START NEW GAME</button>
+    <button class="primary" (click)="gameService.startGame()">START NEW GAME</button>
   </div>
   <div class="logo hidden"></div>
 </div>

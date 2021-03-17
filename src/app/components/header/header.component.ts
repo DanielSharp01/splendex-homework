@@ -9,7 +9,7 @@ import {GameService} from '../../services/GameService';
 export class HeaderComponent implements OnInit {
 
   public shouldHaveMiddle: boolean;
-  constructor(private gameService: GameService) {
+  constructor(public gameService: GameService) {
     this.gameService.screen.subscribe(screen => {
       this.shouldHaveMiddle = screen === 'game';
     });
@@ -18,4 +18,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  deckSizeChanged(value: string): void {
+    this.gameService.changeDeckSize(parseInt(value, 10));
+  }
 }
