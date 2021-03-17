@@ -7,7 +7,6 @@ import {GameService} from './services/GameService';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'splendex-homework';
   currentScreen: 'home' | 'game';
 
   constructor(private gameService: GameService) {

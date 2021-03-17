@@ -1,15 +1,16 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Card, CardImage} from '../model/Card';
-import {distinctUntilChanged} from 'rxjs/operators';
+import {distinctUntilChanged, map, mergeMap} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
   private _screen = new BehaviorSubject<'home' | 'game'>('home');
-  private _cards = new BehaviorSubject<Array<Card>>(null);
+  private _cards = new BehaviorSubject<Array<Card> | null>(null);
   private _tries = new BehaviorSubject<number>(0);
-  private _best = new BehaviorSubject<number>(null);
+  private _best = new BehaviorSubject<Array<number | null>>([null, null, null, null, null, null, null, null]);
   private _deckSize = new BehaviorSubject<number>(20);
+  private _deckSizeIndex = new BehaviorSubject<number | null>(null);
   private pickEnabled = true;
 
   public readonly deckSizes = [6, 8, 10, 12, 14, 16, 18, 20];
@@ -22,8 +23,10 @@ export class GameService {
     this._screen.pipe(distinctUntilChanged()).subscribe(screen => localStorage.setItem('screen', screen));
     this._cards.pipe(distinctUntilChanged()).subscribe(cards => localStorage.setItem('cards', JSON.stringify(cards)));
     this._tries.pipe(distinctUntilChanged()).subscribe(tries => localStorage.setItem('tries', tries.toString()));
-    this._best.pipe(distinctUntilChanged()).subscribe(best => localStorage.setItem('best', best.toString()));
+    this._best.pipe(distinctUntilChanged()).subscribe(best => localStorage.setItem('best', JSON.stringify(best)));
     this._deckSize.pipe(distinctUntilChanged()).subscribe(deckSize => localStorage.setItem('deckSize', deckSize.toString()));
+    this._deckSizeIndex.pipe(distinctUntilChanged())
+      .subscribe(deckSizeIndex => localStorage.setItem('deckSizeIndex', deckSizeIndex?.toString()));
   }
 
   public loadFromStorage(): void {
@@ -32,6 +35,7 @@ export class GameService {
     const tries = localStorage.getItem('tries');
     const best = localStorage.getItem('best');
     const deckSize = localStorage.getItem('deckSize');
+    const deckSizeIndex = localStorage.getItem('deckSizeIndex');
     if (screen) { this._screen.next(screen); }
     if (cards) {
       try {
@@ -50,7 +54,7 @@ export class GameService {
     }
     if (best) {
       try {
-        this._best.next(parseInt(best, 10));
+        this._best.next(JSON.parse(best));
       }
       catch (e) {
         console.error('best could not be parsed from local storage');
@@ -70,7 +74,7 @@ export class GameService {
     return this._screen.asObservable();
   }
 
-  public get cards(): Observable<Array<Card>> {
+  public get cards(): Observable<Array<Card> | null> {
     return this._cards.asObservable();
   }
 
@@ -79,7 +83,7 @@ export class GameService {
   }
 
   public get best(): Observable<number> {
-    return this._best.asObservable();
+    return this._best.pipe(mergeMap(b => this._deckSizeIndex.pipe(map(dsi => b[dsi]))));
   }
 
   public get deckSize(): Observable<number> {
@@ -92,6 +96,7 @@ export class GameService {
 
   public startGame(): void {
     this._screen.next('game');
+    this._deckSizeIndex.next(this.deckSizes.findIndex(d => d === this._deckSize.value));
     this._cards.next(this.generateCards());
     this._tries.next(0);
   }
@@ -136,8 +141,10 @@ export class GameService {
 
         if (cards.filter(c => c.state === 'hidden').length === 0) {
           alert('You win!');
-          if (!this._best.value || this._best.value > this._tries.value) {
-            this._best.next(this._tries.value);
+          if (!this._best.value[this._deckSizeIndex.value] || this._best.value[this._deckSizeIndex.value] > this._tries.value) {
+            const newBest = [...this._best.value];
+            newBest[this._deckSizeIndex.value] = this._tries.value;
+            this._best.next(newBest);
           }
         }
 
