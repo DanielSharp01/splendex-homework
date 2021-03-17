@@ -6,9 +6,19 @@
 
 .content {
   box-sizing: border-box;
-  width: 100%;
-  @media only screen and (min-width: 1050px) {
-    width: 5 * (200px + 16px);
+
+  width: 2 * (200px + 22px);
+
+  @media only screen and (min-width: 751px) {
+    width: 3 * (200px + 20px);
+  }
+
+  @media only screen and (min-width: 951px) {
+    width: 4 * (200px + 18px);
+  }
+
+  @media only screen and (min-width: 1051px) {
+    width: 5 * (200px + 18px);
   }
 
 
