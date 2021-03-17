@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  public image: 'angular' | 'd3' | 'jenkins' | 'postcss' | 'react' | 'redux' | 'sass' | 'splendex' | 'ts' | 'webpack';
+  @Input() public image: 'angular' | 'd3' | 'jenkins' | 'postcss' | 'react' | 'redux' | 'sass' | 'splendex' | 'ts' | 'webpack';
+  @Input() public state: 'hidden' | 'revealed' | 'removed' = 'hidden';
 
   constructor() { }
 
