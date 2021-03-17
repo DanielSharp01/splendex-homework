@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {GameService} from './services/GameService';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',

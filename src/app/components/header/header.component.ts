@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {GameService} from '../../services/GameService';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, map} from 'rxjs/operators';
@@ -8,7 +8,7 @@ import {filter, map} from 'rxjs/operators';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   public shouldHaveMiddle: boolean;
   constructor(public gameService: GameService, private router: Router) {
@@ -19,11 +19,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  deckSizeChanged(value: string): void {
-    console.log(value);
-    this.gameService.changeDeckSize(parseInt(value, 10));
+  deckSizeChanged(value: number): void {
+    this.gameService.changeDeckSize(value);
   }
 }
