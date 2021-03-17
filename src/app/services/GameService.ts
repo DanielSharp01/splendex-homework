@@ -12,6 +12,7 @@ export class GameService {
   private _deckSize = new BehaviorSubject<number>(20);
   private _deckSizeIndex = new BehaviorSubject<number | null>(null);
   private pickEnabled = true;
+  private timeOutHandle: any = null;
 
   public readonly deckSizes = [6, 8, 10, 12, 14, 16, 18, 20];
   public readonly images: Array<CardImage> = [
@@ -96,6 +97,11 @@ export class GameService {
   }
 
   public startGame(): void {
+    if (this.timeOutHandle) {
+      clearTimeout(this.timeOutHandle);
+      this.timeOutHandle = null;
+    }
+    this.pickEnabled = true;
     this._deckSizeIndex.next(this.deckSizes.findIndex(d => d === this._deckSize.value));
     this._cards.next(this.generateCards());
     this._tries.next(0);
@@ -153,7 +159,8 @@ export class GameService {
         this._tries.next(this._tries.value + 1);
         this.pickEnabled = false;
         // Wait a little so the user knows that they picked wrong
-        setTimeout(() => {
+        this.timeOutHandle = setTimeout(() => {
+          this.timeOutHandle = null;
           revealedCards[0].state = 'hidden';
           revealedCards[1].state = 'hidden';
           this._cards.next([...cards]);
