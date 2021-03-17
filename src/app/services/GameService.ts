@@ -65,6 +65,14 @@ export class GameService {
         console.error('deckSize could not be parsed from local storage');
       }
     }
+    if (deckSizeIndex) {
+      try {
+        this._deckSizeIndex.next(parseInt(deckSizeIndex, 10));
+      }
+      catch (e) {
+        console.error('deckSizeIndex could not be parsed from local storage');
+      }
+    }
   }
 
   public get cards(): Observable<Array<Card> | null> {
