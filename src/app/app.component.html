@@ -1,6 +1,8 @@
 <div class="app">
   <app-header></app-header>
   <div class="content">
-    <router-outlet></router-outlet>
+    <!-- In my opinion this project does not need routing it's better if we use the GameService as our router-->
+    <app-home *ngIf="currentScreen === 'home'"></app-home>
+    <app-game *ngIf="currentScreen === 'game'"></app-game>
   </div>
 </div>

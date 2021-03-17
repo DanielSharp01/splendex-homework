@@ -4,8 +4,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { GameComponent } from './components/game/game.component';
 import { CardComponent } from './components/card/card.component';
-import {RouterModule} from '@angular/router';
-import { routes } from './app.routing';
 import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
@@ -18,7 +16,6 @@ import { HeaderComponent } from './components/header/header.component';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

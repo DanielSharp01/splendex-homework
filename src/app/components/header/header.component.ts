@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {GameService} from '../../services/GameService';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  public shouldHaveMiddle: boolean;
+  constructor(private gameService: GameService) {
+    this.gameService.screen.subscribe(screen => {
+      this.shouldHaveMiddle = screen === 'game';
+    });
+  }
 
   ngOnInit(): void {
   }
