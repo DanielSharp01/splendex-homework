@@ -1,8 +1,9 @@
 <div class="game-header">
   <span class="align-vcenter">Current tries:&nbsp;<strong>{{gameService.tries | async}}</strong></span>
-  <span class="align-hcenter">Best:<br><strong class="big">{{gameService.best | async}}</strong></span>
-  <button class="secondary" (click)="gameService.startGame()">RESTART</button>
+  <span class="align-hcenter">Best:<br><strong class="big">{{(gameService.best | async) || 'N/A'}}</strong></span>
+  <!-- I interpreted that you are supposed to get back to the landing page when you press restart-->
+  <button class="secondary" (click)="gameService.restart()">RESTART</button>
 </div>
 <div class="card-container">
-  <app-card [card]="card" *ngFor="let card of (gameService.cards | async);"></app-card>
+  <app-card [card]="card" (click)="gameService.pickCard(index)" *ngFor="let card of (gameService.cards | async); let index = index"></app-card>
 </div>

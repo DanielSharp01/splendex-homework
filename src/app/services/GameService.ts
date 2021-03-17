@@ -8,8 +8,10 @@ export class GameService {
   private _screen = new BehaviorSubject<'home' | 'game'>('home');
   private _cards = new BehaviorSubject<Array<Card>>(null);
   private _tries = new BehaviorSubject<number>(0);
-  private _best = new BehaviorSubject<number>(0);
+  private _best = new BehaviorSubject<number>(null);
   private _deckSize = new BehaviorSubject<number>(20);
+  private pickEnabled = true;
+
   public readonly deckSizes = [6, 8, 10, 12, 14, 16, 18, 20];
   public readonly images: Array<CardImage> = [
     'angular', 'd3', 'jenkins', 'postcss', 'react', 'redux', 'sass', 'splendex', 'ts', 'webpack'];
@@ -103,7 +105,7 @@ export class GameService {
         while (cards[index] !== null) {
           index = Math.floor(Math.random() * this._deckSize.value);
         }
-        cards[index] = { image, state: 'revealed' };
+        cards[index] = { image, state: 'hidden' };
       };
 
       let imageIndex = Math.floor(Math.random() * this._deckSize.value / 2);
@@ -116,5 +118,46 @@ export class GameService {
     }
 
     return cards;
+  }
+
+  public pickCard(index: number): void {
+    if (!this.pickEnabled) { return; }
+    const cards = [...this._cards.value];
+    if (cards[index].state !== 'hidden') { return; }
+    cards[index].state = 'revealed';
+    const revealedCards = cards.filter(c => c.state === 'revealed');
+    if (revealedCards.length === 2) {
+      if (revealedCards[0].image === revealedCards[1].image) {
+        this._tries.next(this._tries.value + 1);
+        this.pickEnabled = false;
+        revealedCards[0].state = 'removed';
+        revealedCards[1].state = 'removed';
+        this._cards.next([...cards]);
+
+        if (cards.filter(c => c.state === 'hidden').length === 0) {
+          alert('You win!');
+          if (!this._best.value || this._best.value > this._tries.value) {
+            this._best.next(this._tries.value);
+          }
+        }
+
+        this.pickEnabled = true;
+      } else {
+        this._tries.next(this._tries.value + 1);
+        this.pickEnabled = false;
+        // Wait a little so the user knows that they picked wrong
+        setTimeout(() => {
+          revealedCards[0].state = 'hidden';
+          revealedCards[1].state = 'hidden';
+          this._cards.next([...cards]);
+          this.pickEnabled = true;
+        }, 1000);
+      }
+    }
+    this._cards.next(cards);
+  }
+
+  restart(): void {
+    this._screen.next('home');
   }
 }
