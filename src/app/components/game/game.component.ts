@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GameService} from '../../services/GameService';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-game',
@@ -8,7 +9,7 @@ import {GameService} from '../../services/GameService';
 })
 export class GameComponent implements OnInit {
 
-  constructor(public gameService: GameService) { }
+  constructor(public gameService: GameService, private ngxSmartModalService: NgxSmartModalService) { }
 
   ngOnInit(): void {
   }

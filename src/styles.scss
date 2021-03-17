@@ -1,4 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ngx-smart-modal/ngx-smart-modal";
+
+.nsm-content {
+  button:not(.nsm-dialog-btn-close) {
+    margin-right: 12px;
+  }
+}
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+.ng-select.inline {
+  display: inline-block;
+
+  .ng-select-container {
+    padding: 20px 16px;
+    border-radius: 2px;
+    font-size: 18px;
+    width: 100px;
+    font-weight: 700;
+    border: 1px solid #ddd;
+  }
+}
 
 body {
   font-size: 14px;
@@ -67,14 +89,6 @@ button {
       background: darken(#fff, 20%);
     }
   }
-}
-
-select {
-  padding: 10px 16px;
-  font-size: 18px;
-  width: 100px;
-  font-weight: 700;
-  border: 1px solid #ddd;
 }
 
 .hidden {

@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   }
 
   deckSizeChanged(value: string): void {
+    console.log(value);
     this.gameService.changeDeckSize(parseInt(value, 10));
   }
 }

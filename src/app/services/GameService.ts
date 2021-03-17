@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Card, CardImage} from '../model/Card';
 import {distinctUntilChanged, map, mergeMap} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -17,7 +17,7 @@ export class GameService {
   public readonly images: Array<CardImage> = [
     'angular', 'd3', 'jenkins', 'postcss', 'react', 'redux', 'sass', 'splendex', 'ts', 'webpack'];
 
-  constructor() {
+  constructor(private ngxSmartModalService: NgxSmartModalService) {
     this.loadFromStorage();
 
     this._cards.pipe(distinctUntilChanged()).subscribe(cards => localStorage.setItem('cards', JSON.stringify(cards)));
@@ -140,7 +140,7 @@ export class GameService {
         this._cards.next([...cards]);
 
         if (cards.filter(c => c.state === 'hidden').length === 0) {
-          alert('You win!');
+          this.ngxSmartModalService.getModal('winModal').open();
           if (!this._best.value[this._deckSizeIndex.value] || this._best.value[this._deckSizeIndex.value] > this._tries.value) {
             const newBest = [...this._best.value];
             newBest[this._deckSizeIndex.value] = this._tries.value;

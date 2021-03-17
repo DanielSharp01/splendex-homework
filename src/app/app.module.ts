@@ -7,6 +7,9 @@ import { CardComponent } from './components/card/card.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routing';
+import {NgxSmartModalModule} from 'ngx-smart-modal';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { routes } from './app.routing';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     RouterModule.forRoot(routes),
+    NgxSmartModalModule.forRoot(),
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

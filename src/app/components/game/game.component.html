@@ -1,7 +1,18 @@
+<ngx-smart-modal #winModal customClass="nsm-dialog-animation-ttb" identifier="winModal">
+  <h1>You win</h1>
+  <p>Congratulations you won!</p>
+  <button (click)="winModal.close()">Close</button>
+</ngx-smart-modal>
+<ngx-smart-modal #restartModal customClass="nsm-dialog-animation-ttb" identifier="restartModal">
+  <h1>Are you sure?</h1>
+  <p>Are you sure you want to start another game? You will lose all your progress.</p>
+  <button (click)="gameService.restart(); restartModal.close();">Yes</button>
+  <button (click)="restartModal.close()">No</button>
+</ngx-smart-modal>
 <div class="game-header">
   <span class="align-vcenter">Current tries:&nbsp;<strong>{{gameService.tries | async}}</strong></span>
   <span class="align-hcenter">Best:<br><strong class="big">{{(gameService.best | async) || 'N/A'}}</strong></span>
-  <button class="secondary" (click)="gameService.restart()">RESTART</button>
+  <button class="secondary" (click)="restartModal.open()">RESTART</button>
 </div>
 <div class="card-container">
   <app-card [card]="card" (click)="gameService.pickCard(index)" *ngFor="let card of (gameService.cards | async); let index = index"></app-card>

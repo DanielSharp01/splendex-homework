@@ -10,8 +10,6 @@
     </ul>
   </div>
   <label for="deckSize">Deck size</label>
-  <select id="deckSize" (change)="deckSizeChanged($event.target.value)">
-    <option [value]="num" [selected]="(gameService.deckSize | async) === num" *ngFor="let num of gameService.deckSizes">{{num}}</option>
-  </select>
+  <ng-select id="deckSize" class="inline" [items]="gameService.deckSizes" [clearable]="false" [searchable]="false" [ngModel]="gameService.deckSize | async" (ngModelChange)="deckSizeChanged($event)"></ng-select>
   <button class="primary" (click)="startGame()">START NEW GAME</button>
 </div>
