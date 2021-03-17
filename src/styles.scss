@@ -44,12 +44,28 @@ button {
   &.primary {
     background: #FF3000;
     color: white;
+
+    &:hover {
+      background: lighten(#FF3000, 10%);
+    }
+
+    &:active {
+      background: lighten(#FF3000, 20%);
+    }
   }
 
   &.secondary {
     background: transparent;
     color: black;
     border: 2px solid #9C9C9C;
+
+    &:hover {
+      background: darken(#fff, 10%);
+    }
+
+    &:active {
+      background: darken(#fff, 20%);
+    }
   }
 }
 
