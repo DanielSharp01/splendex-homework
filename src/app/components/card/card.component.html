@@ -1,3 +1,3 @@
-<div class="card">
-  <img src="/assets/images/cards/{{image}}.png" width="96" height="96" alt="{{image | titlecase }}">
+<div class="card" [class.removed]="state === 'removed'">
+  <img *ngIf="state !== 'hidden'" src="/assets/images/cards/{{image}}.png" width="150" height="150" alt="{{image | titlecase }}">
 </div>
